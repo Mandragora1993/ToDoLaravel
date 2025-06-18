@@ -7,7 +7,7 @@ ToDoLaravel – Instrukcja uruchomienia i konfiguracji
 ->Uruchomienie projektu:
 
     1. Sklonuj repozytorium
-    git clone https://github.com/TWOJ-LOGIN/TWOJE-REPO.git
+    git clone https://github.com/Mandragora1993/ToDoLaravel.git
 
     2. Uruchom projekt w Dockerze
         Plik konfiguracyjny Docker Compose w katalogu src:  
