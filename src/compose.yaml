@@ -1,0 +1,47 @@
+version: "3.8"
+
+services:
+  php-fpm:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    volumes:
+      - ./storage:/var/www/storage
+      - ./database:/var/www/database
+    networks:
+      - laravel-production
+
+  queue:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    command: php artisan queue:work --tries=3
+    volumes:
+      - ./storage:/var/www/storage
+      - ./database:/var/www/database
+    depends_on:
+      - php-fpm
+      - redis
+    networks:
+      - laravel-production
+
+  web:
+    image: nginx:alpine
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:rw
+      - ./public:/var/www/public:rw
+      - ./storage:/var/www/storage:rw
+    ports:
+      - "8080:80"
+    depends_on:
+      - php-fpm
+    networks:
+      - laravel-production
+
+  redis:
+    image: redis:alpine
+    networks:
+      - laravel-production
+
+networks:
+  laravel-production:
